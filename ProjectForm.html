@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Form</title>
+    <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #afcacf7a;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #afcacffd;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 370px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 3px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        .warning {
+            margin-top: 5px;
+        }
+
+        .warning error {
+            color: #ed0808;
+            font-size: 17px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #3b4548;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registration</h2>
+        <form method="post" autocomplete="off">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" autocomplete="off" required id="name" onkeyup="validName(this)">
+                <div class="warning">
+                    <error id="name-warn"></error>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" autocomplete="off" required id="username" onkeyup="spceCheck(this)" name="username">
+                <div class="warning">
+                    <error id="username-warn"></error>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="username">Email</label>
+                <input type="email" autocomplete="off" onkeyup="valiEmail(this.value)" required id="email"  name="email">
+                <div class="warning">
+                    <error id="email-warn"></error>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" autocomplete="off" required id="password"   onkeyup="validPassword(this)" name="password">
+                <div class="warning">
+                    <error id="p-warn"></error>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="con-password">Confirm Password</label>
+                <input type="password" autocomplete="off" required id="confirm-password" onkeyup="matchingPassword(this)" name="confirm-password">
+                <div class="warning">
+                    <error id="cp-warn"></error>
+                </div>
+            </div>
+            <div class="form-group">
+                <button onclick="" value="submit" class="btn" id="btn">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('username').setAttribute('autocomplete', 'off');
+        document.getElementById('password').setAttribute('autocomplete', 'new-password');
+        document.getElementById('confirm-password').setAttribute('autocomplete', 'new-password');
+
+        var namePattern = /^[A-Za-z\s.'-]+$/;
+        var nameWarn = document.getElementById('name-warn');
+
+        function validName(elem){
+            if(!namePattern.test(elem.value)){ 
+                nameWarn.innerText = "Please enter a valid name. The name should start with a capital letter and contain only letters, spaces, hyphens, and apostrophes.";
+            }else{
+                nameWarn.innerText = "";
+            }
+        }
+
+
+        var usernamePattern = /\s/;
+          var username_warn = document.getElementById('username-warn'); 
+
+            function spceCheck(obj){
+                if(usernamePattern.test(obj.value)){
+                    username_warn.innerText ="Whitespace is not allowed";
+                }else{
+                    username_warn.innerText ="";
+                }
+            }
+
+
+         var emailPattern =  /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+         var emailWarn = document.getElementById('email-warn'); 
+         function valiEmail(email){
+            if(!emailPattern.test(email)){
+                emailWarn.innerText = "Enter a valid email!";
+            }else{
+                emailWarn.innerText = "";
+            }
+         }
+
+
+
+        
+        var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\^&\*])(?=.{8,})/;
+        var passwordWarn = document.getElementById('p-warn');
+
+
+        function validPassword(elem){
+            if(passwordPattern.test(elem.value)){
+                passwordWarn.style.color = "green";
+                passwordWarn.innerText = "Strong Password";
+            }else {
+                passwordWarn.style.color = "red";
+                passwordWarn.innerText = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+            }
+        }
+
+
+        function matchingPassword(elem){
+        var password = document.getElementById("password").value;
+        if(elem.value.length > 0){
+            if(elem.value !== password){
+                document.getElementById('cp-warn').innerText = "Confirm password does not match";
+            } else {
+                document.getElementById('cp-warn').innerText = "";
+            }
+        } else {
+            document.getElementById('cp-warn').innerText = "Please enter confirm password";
+        }
+    }
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        color: white;
+
+        background: #752626; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to right,
+          #833988,
+          #c94b4b
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to right,
+          #4b134f,
+          #345f73e8
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+      }
+
+      .container {
+        background: #752626; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to right,
+          #833988,
+          #c94b4b
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to right,
+          #4b134f,
+          #1e3844
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 370px;
+      }
+      h2 {
+        text-align: center;
+        color: #fff;
+      }
+      .form-group {
+        margin-bottom: 25px;
+        position: relative;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: white;
+      }
+
+      .input-container {
+        position: relative;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        padding-right: 40px; /* Add padding to the right to make space for the icon */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 15px; /* Position the icon 15px to the right */
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+      }
+      .btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #c538d8;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      .btn:hover {
+        background-color: #0056b3;
+      }
+      p {
+        text-align: center;
+      }
+      p a {
+        color: #fff;
+        text-decoration: none;
+      }
+      p a:hover {
+        text-decoration: underline;
+      }
+      .warning {
+        color: #ed0808;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Login</h2>
+      <form
+        id="loginForm"
+        action="login.php"
+        method="post"
+        onsubmit="return validateForm()"
+      >
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            required
+            onkeyup="validateUsername()"
+          />
+          <div class="warning" id="username-warn"></div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-container">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              required
+              onkeyup="validatePassword()"
+            />
+            <img
+              src="resources/view_password.png"
+              class="toggle-password"
+              id="toggle-password"
+              onclick="togglePasswordVisibility('password')"
+              alt="Show"
+            />
+          </div>
+          <div class="warning" id="password-warn"></div>
+        </div>
+        <button type="submit" class="btn">Login</button>
+      </form>
+      <p>
+        <a href="register.html">Register</a> |
+        <a href="forgot_password.html">Forgot Password</a>
+      </p>
+    </div>
+
+    <script>
+      function validateUsername() {
+        var usernamePattern = /\s/;
+        var username = document.getElementById("username").value;
+        if (usernamePattern.test(username)) {
+          document.getElementById("username-warn").innerText =
+            "Whitespace is not allowed in username.";
+        } else {
+          document.getElementById("username-warn").innerText = "";
+        }
+      }
+
+      function validatePassword() {
+        var passwordPattern =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\^&\*])(?=.{8,})/;
+        var password = document.getElementById("password").value;
+        if (!passwordPattern.test(password)) {
+          document.getElementById("password-warn").innerText =
+            "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+        } else {
+          document.getElementById("password-warn").innerText = "";
+        }
+      }
+
+      function togglePasswordVisibility(fieldId) {
+        var field = document.getElementById(fieldId);
+        var icon = document.getElementById("toggle-password");
+        if (field.type === "password") {
+          field.type = "text";
+          icon.src = "resources/hide_password.png"; // icon take hide icon a change kore
+        } else {
+          field.type = "password";
+          icon.src = "resources/view_password.png"; // eta icon take view icon a change kore
+        }
+      }
+
+      function validateForm() {
+        validateUsername();
+        validatePassword();
+
+        // kono ekta warning diplay hoe thakle submit jeno na nei
+        var warnings = document.querySelectorAll(".warning");
+        for (var i = 0; i < warnings.length; i++) {
+          if (warnings[i].innerText !== "") {
+            alert(
+              "Please correct the highlighted issues before submitting the form."
+            );
+            return false; // ei false tai prevents form submission
+          }
+        }
+
+        return true; // kono warning na thakle go submit
+      }
+    </script>
+  </body>
+</html>

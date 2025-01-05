@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #752626; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to right,
+          #833988,
+          #c94b4b
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to right,
+          #4b134f,
+          #345f73e8
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .container {
+        background: #752626; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to right,
+          #833988,
+          #c94b4b
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to right,
+          #4b134f,
+          #1e3844
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 370px;
+      }
+      h2 {
+        text-align: center;
+        color: #fff;
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #fff;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      .input-container {
+        position: relative;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        padding-right: 40px; /* Add padding to the right to make space for the icon */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+      }
+      .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 15px; /* Position the icon 15px to the right */
+        transform: translateY(-50%);
+        width: 24px;
+        height: 24px;
+        cursor: pointer;
+      }
+      .btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #a36fd6;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+      }
+      .btn:hover {
+        background-color: #e83692;
+      }
+      .warning {
+        color: #ed0808;
+        font-size: 14px;
+        margin-top: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Registration</h2>
+      <form
+        action="register.php"
+        method="post"
+        onsubmit="return validateForm()"
+      >
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            required
+            onkeyup="validateName()"
+          />
+          <div class="warning" id="name-warn"></div>
+        </div>
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            name="username"
+            id="username"
+            required
+            onkeyup="validateUsername()"
+          />
+          <div class="warning" id="username-warn"></div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            required
+            onkeyup="validateEmail()"
+          />
+          <div class="warning" id="email-warn"></div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-container">
+            <input
+              type="password"
+              name="password"
+              id="password"
+              required
+              onkeyup="validatePassword()"
+            />
+            <img
+              src="resources/view_password.png"
+              class="toggle-password"
+              id="toggle-password-1"
+              onclick="togglePasswordVisibility('password', 'toggle-password-1')"
+              alt="Show"
+            />
+          </div>
+          <div class="warning" id="p-warn"></div>
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <div class="input-container">
+            <input
+              type="password"
+              name="confirm-password"
+              id="confirm-password"
+              required
+              onkeyup="validateConfirmPassword()"
+            />
+            <img
+              src="resources/view_password.png"
+              class="toggle-password"
+              id="toggle-password-2"
+              onclick="togglePasswordVisibility('confirm-password', 'toggle-password-2')"
+              alt="Show"
+            />
+          </div>
+          <div class="warning" id="cp-warn"></div>
+        </div>
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
+    <script>
+      function validateName() {
+        var namePattern = /^[A-Za-z\s.-]+$/;
+        var name = document.getElementById("name").value;
+        if (!namePattern.test(name)) {
+          document.getElementById("name-warn").innerText =
+            "Please enter a valid name.";
+        } else {
+          document.getElementById("name-warn").innerText = "";
+        }
+      }
+
+      function validateUsername() {
+        var usernamePattern = /\s/;
+        var username = document.getElementById("username").value;
+        if (usernamePattern.test(username)) {
+          document.getElementById("username-warn").innerText =
+            "Whitespace is not allowed in username.";
+        } else {
+          document.getElementById("username-warn").innerText = "";
+        }
+      }
+
+      function validateEmail() {
+        var emailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        var email = document.getElementById("email").value;
+        if (!emailPattern.test(email)) {
+          document.getElementById("email-warn").innerText =
+            "Please enter a valid email.";
+        } else {
+          document.getElementById("email-warn").innerText = "";
+        }
+      }
+
+      function validatePassword() {
+        var passwordPattern =
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%\^&\*])(?=.{8,})/;
+        var password = document.getElementById("password").value;
+        if (!passwordPattern.test(password)) {
+          document.getElementById("p-warn").innerText =
+            "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+        } else {
+          document.getElementById("p-warn").innerText = "";
+        }
+      }
+
+      function validateConfirmPassword() {
+        var password = document.getElementById("password").value;
+        var confirmPassword = document.getElementById("confirm-password").value;
+        if (password !== confirmPassword) {
+          document.getElementById("cp-warn").innerText =
+            "Confirm password does not match.";
+        } else {
+          document.getElementById("cp-warn").innerText = "";
+        }
+      }
+
+      function togglePasswordVisibility(fieldId, iconId) {
+        var field = document.getElementById(fieldId);
+        var icon = document.getElementById(iconId);
+        if (field.type === "password") {
+          field.type = "text";
+          icon.src = "resources/hide_password.png"; // Change the icon to a hide icon
+        } else {
+          field.type = "password";
+          icon.src = "resources/view_password.png"; // Change the icon back to a view icon
+        }
+      }
+
+      function validateForm() {
+        validateName();
+        validateUsername();
+        validateEmail();
+        validatePassword();
+        validateConfirmPassword();
+
+        // Check if any warnings are displayed
+        var warnings = document.querySelectorAll(".warning");
+        for (var i = 0; i < warnings.length; i++) {
+          if (warnings[i].innerText !== "") {
+            return false; // Prevent form submission if any warnings are displayed
+          }
+        }
+
+        return true; // Allow form submission if all validations pass
+      }
+    </script>
+  </body>
+</html>
